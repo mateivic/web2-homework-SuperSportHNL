@@ -1,0 +1,40 @@
+.center {
+    text-align: center;
+}
+
+.table_center {
+    width:50%; 
+    margin-left:auto; 
+    margin-right:auto; 
+}
+
+.form_center {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.comment_input {
+    width: 30%;
+}
+
+.right {
+    text-align: right;
+}
+
+.width100 {
+    width: 100%;
+}
+
+.height100 {
+    height:100%;
+}
+
+.margin {
+    margin: 1.5rem;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

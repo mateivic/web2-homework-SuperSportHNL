@@ -1,0 +1,48 @@
+html 
+    head 
+        style 
+            include ../public/css/index.css
+        title SuperSport HNL 2022/2023
+    body    
+        if (isAuthenticated && user)
+            span 
+                h1.center SuperSport HNL 2022/2023
+                h3.right #[a(href='/logout/') Odjava]
+            h3.center Pozdrav #{user.name}
+        else 
+            span
+                h1.center SuperSport HNL 2022/2023
+                h3.right #[a(href='/login/') Prijava]
+
+        div.flex
+            each round in rounds 
+                a.margin(href=`/results/${round}`)
+                    h3.center #{round}. kolo
+
+        table.table_center(border='1')
+            tr 
+                th IME KLUBA 
+                th OS 
+                th GR 
+                th B
+            each team in teams    
+                tr    
+                    td= team.name 
+                    td= team.PG 
+                    td= team.GD 
+                    td= team.points
+
+        h2.center Raspored nadolazećih utakmica
+        table.table_center(border='1')
+            tr 
+                th DATUM 
+                th KOLO 
+                th DOMAĆIN 
+                th GOST
+            each schedule in schedules 
+                tr 
+                    td= schedule.date 
+                    td= schedule.round 
+                    td= schedule.team1 
+                    td= schedule.team2 
+            

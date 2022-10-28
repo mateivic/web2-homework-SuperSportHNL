@@ -1,0 +1,131 @@
+html     
+    head 
+        style 
+            include ../public/css/index.css
+        title Rezultati SuperSport HNL 2022/2023
+    body
+        if (isAuthenticated && user)
+            span 
+                h1.center Rezultati SuperSport HNL 2022/2023
+                h3.right #[a(href='/logout/') Odjava]
+        else 
+            span
+                h1.center Rezultati SuperSport HNL 2022/2023
+                h3.right #[a(href='/login/') Prijava]
+        h2.center #{round}. kolo
+        if (isAdmin)
+            table.table_center(border='1')
+                tr 
+                    th DATUM
+                    th DOMAĆIN
+                    th GOST
+                    th GOLOVI DOMAĆIN 
+                    th GOLOVI GOST
+                each match in results
+                    tr    
+                        form.center(action=`/editResult/${round}`, method="post")
+                            td
+                                input(type="hidden", name="team1" value=`${match.team1}`)
+                                input(type="hidden", name="team2" value=`${match.team2}`)
+                                input(type="hidden", name="goals1" value=`${match.goals1}`)
+                                input(type="hidden", name="goals2" value=`${match.goals2}`)
+                                input(type="string", name="date", value=`${match.date}`, pattern="[0-9]{2}.[0-9]{2}." required) 
+                            td
+                                input(type="text", name="newTeam1", value=`${match.team1}` required) 
+                            td
+                                input(type="text", name="newTeam2", value=`${match.team2}` required) 
+                            td
+                                input(type="number", name="newGoals1", value=`${match.goals1}` required) 
+                            td
+                                input(type="number", name="newGoals2", value=`${match.goals2}` required) 
+                            td
+                                input(type="submit", value="Izmjeni")
+
+                        form.center(action=`/deleteResult/${round}`, method="post")
+                            td 
+                                input(type="hidden", name="team1" value=`${match.team1}`)
+                                input(type="hidden", name="team2" value=`${match.team2}`)
+                                input(type="hidden", name="goals1" value=`${match.goals1}`)
+                                input(type="hidden", name="goals2" value=`${match.goals2}`)
+                                input(type="submit", value="Obriši")
+
+                tr 
+                    form.center(action=`/addResult/${round}`, method="post")
+                        td 
+                            input(type="string", name="date", pattern="[0-9]{2}.[0-9]{2}." required) 
+                        td 
+                            input(type="text", name="team1", required)
+                        td
+                            input(type="text", name="team2", required)
+                        td 
+                            input(type="number", name="goals1", required)
+                        td 
+                            input(type="number", name="goals2", required)
+                        td 
+                            input(type="submit", value="Dodaj rezultat")
+                        
+                    
+        else
+            table.table_center(border='1')
+                tr 
+                    th DATUM
+                    th DOMAĆIN
+                    th GOST
+                    th GOLOVI DOMAĆIN 
+                    th GOLOVI GOST
+                each match in results
+                    tr    
+                        td= match.date
+                        td= match.team1
+                        td= match.team2
+                        td= match.goals1
+                        td= match.goals2
+
+
+        if (isAuthenticated)
+            h2.center Komentari 
+            table.table_center(border='1')
+                tr 
+                    th VRIJEME
+                    th AUTOR
+                    th TEKST
+
+                each comment in comments
+                    tr  
+                        td= comment.date.toLocaleString()
+                        td= comment.author
+                        if (comment.author === user.email)
+                            td 
+                                form.center.height100(action=`/changeComment/${round}/${comment.date.getSeconds()}`, method="post")
+                                    input.width100(type="text", name="newComment", value=`${comment.text}` required) 
+                                    input(type="submit", value="Izmjeni")
+                            td
+                                a(href=`deleteComment/${round}/${comment.date.getSeconds()}`) Obriši komentar
+                        else 
+                            td= comment.text
+
+                        if isAdmin
+                            form.center(action=`/adminDeleteComment/${round}`, method="post")
+                                td 
+                                    input(type="hidden", name="time" value=`${comment.date.getSeconds()}`)
+                                    input(type="hidden", name="author" value=`${comment.author}`)
+                                    input(type="submit", value="Obriši")
+
+                                    
+            if !isAdmin
+                form.form_center(action=`/results/${round}`, method="post")
+                    label(for="comment") Napiši komentar:
+                    input.comment_input(type="text", name="comment", required) 
+                    input(type="submit", value="Pošalji")          
+
+        h3.center #[a(href='/') Natrag]
+            
+        
+        
+        
+        
+        
+        
+        
+   
+        
